@@ -10,9 +10,17 @@ class MouseEvents {
         int y = 0;
 };
 
+class KeyboardEvents {
+    public:
+        bool space = false;
+        bool up = false;
+        bool down = false;
+        bool left = false;
+        bool right = false;
+};
 #endif
 
-void handleQuitEvent(SDL_Event* e, bool &quit, vector<MouseEvents> &mouseEvents) {
+void handleEvents(SDL_Event* e, bool &quit, vector<MouseEvents> &mouseEvents, vector<KeyboardEvents> &keyboardEvents) {
     while (SDL_PollEvent(e)) {
         if (e->type == SDL_QUIT) {
             quit = true;
@@ -31,6 +39,33 @@ void handleQuitEvent(SDL_Event* e, bool &quit, vector<MouseEvents> &mouseEvents)
             MouseEvents mouseEvent;
             SDL_GetMouseState(&mouseEvent.x, &mouseEvent.y);
             mouseEvents.push_back(mouseEvent);
+            continue;
+        }
+
+        if (e->type == SDL_KEYDOWN) {
+            cout << "key down" << e->key.keysym.sym << endl;
+            KeyboardEvents keyboardEvent;
+            if (e->key.keysym.sym == SDLK_SPACE) {
+                keyboardEvent.space = true;
+            }
+
+            if (e->key.keysym.sym == SDLK_RIGHT) {
+                keyboardEvent.right = true;
+            }
+
+            if (e->key.keysym.sym == SDLK_UP) {
+                keyboardEvent.up = true;
+            }
+
+            if (e->key.keysym.sym == SDLK_DOWN) {
+                keyboardEvent.down = true;
+            }
+
+            if (e->key.keysym.sym == SDLK_LEFT) {
+                keyboardEvent.left = true;
+            }   
+
+            keyboardEvents.push_back(keyboardEvent);
             continue;
         }
     }

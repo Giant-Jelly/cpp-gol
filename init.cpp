@@ -5,8 +5,11 @@
 using namespace std;
 
 SDL_Window* init() {
-    cout << "Initializing SDL" << endl;
-    if (SDL_Init(SDL_INIT_EVERYTHING ) < 0) {
+    // Get current time
+    time_t now = time(0);
+    cout << "Initializing SDL at " << now << endl;
+    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "metal");
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         return 0;
     }
@@ -16,8 +19,8 @@ SDL_Window* init() {
         printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return 0;
     }
-
-    cout << "SDL initialized" << endl;
+    now = time(0);
+    cout << "SDL initialized at " << now << endl;
     return window;
 }
 

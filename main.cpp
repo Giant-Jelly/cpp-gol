@@ -12,6 +12,7 @@
 using namespace std;
 
 int main(int argc, char *args[]) {
+    cout << "Starting game..." << endl;
     SDL_Window* window = init();
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     
@@ -25,18 +26,40 @@ int main(int argc, char *args[]) {
 
     SDL_Event e; 
     bool quit = false;
-
+    bool step = false;
+    bool run = false;
     while (!quit) {
         vector<MouseEvents> mouseEvents;
+        vector<KeyboardEvents> keyboardEvents;
         
-        handleQuitEvent(&e, quit, mouseEvents);
+        
+        handleEvents(&e, quit, mouseEvents, keyboardEvents);
+
+        for (KeyboardEvents keyboardEvent : keyboardEvents) {
+            if (keyboardEvent.space) {
+                run = !run;
+                cout << "run: " << run << endl;
+            }
+
+            if (keyboardEvent.right) {
+                step = true;
+                cout << "step: " << step << endl;
+            }
+        }
+
         clearRenderer(renderer);
 
-        handleGridHover(grid, mouseEvents);
-        handleGridClick(grid, mouseEvents);
+
+        if (run || step) {
+            calculateGeneration(grid);
+        } else {
+            handleGridHover(grid, mouseEvents);
+            handleGridClick(grid, mouseEvents);
+        }
 
         drawGrid(grid, renderer);
 
+        step = false;
         SDL_RenderPresent(renderer);
     }
 
