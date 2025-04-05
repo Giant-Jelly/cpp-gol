@@ -1,0 +1,8 @@
+- Dont click more than one cell at a time
+- Controls
+- Run game
+- Stop game
+- Clear cells
+- Step through
+- pick speed
+- zoom Controls
